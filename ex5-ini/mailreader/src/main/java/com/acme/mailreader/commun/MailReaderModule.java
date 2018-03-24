@@ -21,7 +21,6 @@ public class MailReaderModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-
 		if (production) {
 			bind(MailSender.class).to(SmtpMailSender.class);
 		} else {
@@ -29,5 +28,4 @@ public class MailReaderModule extends AbstractModule {
 
 		}
 	}
-
 }

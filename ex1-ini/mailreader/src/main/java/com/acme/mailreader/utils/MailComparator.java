@@ -12,26 +12,65 @@ import com.acme.mailreader.model.Mail;
  */
 public class MailComparator implements Comparator<Mail> {
 
-	public int compare(Mail obj1, Mail obj2) {
-		if (obj1 == null || obj2 == null) {
-			return 0;
+
+	final int MAIL_EGAUX = 0;
+	final int MAIL1_PLUS_PETIT  = 1;
+	final int MAIL1_PLUS_GRAND = -1;
+	
+	
+	
+	public int compare(Mail mail1, Mail mail2) {
+		if (unDesMailEstNul(mail1, mail2)) {
+			return MAIL_EGAUX;
 		}
-		if (obj1.isImportant() != obj2.isImportant()) {
-			if (obj1.isImportant() && !obj2.isImportant()) {
-				return -1;
-			} else {
-				return 1;
-			}
+		if (pasLaMemeImportance(mail1, mail2)) {
+			return ordreParImportance(mail1, mail2);
 		}
-		if (obj1.getStatut() != obj2.getStatut()) {
-			int comp = obj1.getStatut().ordinal()
-					- obj2.getStatut().ordinal();
-			return comp > 0 ? -1 : 1;
+		if (pasLeMemeStatut(mail1, mail2)) {
+			return ordreParStatut(mail1, mail2);
 		}
-		if (obj1.getSujet() != obj2.getSujet()) {
-			return obj2.getSujet().compareTo(obj1.getSujet());
+		if (pasLeMemeSujet(mail1, mail2)) {
+			return ordreParSujet(mail1, mail2);
 		}
-		return obj2.getDate().compareTo(obj1.getDate());
+		return EstDateEgale(mail1, mail2);
+	}
+
+	private int ordreParStatut(Mail mail1, Mail mail2) {
+		int comp = mail1.getStatut().ordinal()
+				- mail2.getStatut().ordinal();
+		return comp > 0 ? MAIL1_PLUS_PETIT  : MAIL1_PLUS_GRAND;
+	}
+
+	private int ordreParSujet(Mail mail1, Mail mail2) {
+		return mail2.getSujet().compareTo(mail1.getSujet());
+	}
+
+	private boolean unDesMailEstNul(Mail mail1, Mail mail2) {
+		return mail1 == null || mail2 == null;
+	}
+
+	private int EstDateEgale(Mail mail1, Mail mail2) {
+		return mail2.getDate().compareTo(mail1.getDate());
+	}
+
+	private boolean pasLeMemeSujet(Mail mail1, Mail mail2) {
+		return mail1.getSujet() != mail2.getSujet();
+	}
+
+	private boolean pasLeMemeStatut(Mail mail1, Mail mail2) {
+		return mail1.getStatut() != mail2.getStatut();
+	}
+
+	private boolean pasLaMemeImportance(Mail mail1, Mail mail2) {
+		return mail1.isImportant() != mail2.isImportant();
+	}
+
+	private int ordreParImportance(Mail mail1, Mail mail2) {
+		if (mail1.isImportant() && !mail2.isImportant()) {
+			return MAIL1_PLUS_GRAND;
+		} else {
+			return MAIL1_PLUS_PETIT;
+		}
 	}
 	
 

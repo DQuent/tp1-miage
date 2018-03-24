@@ -1,8 +1,13 @@
 package com.acme.mailreader.bdd;
 
+import static org.junit.Assert.assertThat;
+
+import java.time.Instant;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.hamcrest.core.Is;
 
 import com.acme.mailreader.domain.Mail;
 import com.acme.mailreader.domain.Mail.Statut;
@@ -39,26 +44,32 @@ public class MailComparaisonStep {
 	@Given("^un premier mail avec l'importance \"([^\"]*)\", le statut \"([^\"]*)\", le sujet \"([^\"]*)\" et la date \"([^\"]*)\"$")
 	public void un_premier_mail(boolean importance, Statut statut,
 			String sujet, String date) throws DateIncorrecteException {
-		//TODO
+		//	this.mail1.setStatut(statut);
+			this.mail1.setImportant(importance);
+			this.mail1.setDate(Instant.parse(date));
+			this.mail1.setSujet(sujet);
+			
 	}
 
 	@Given("^un second mail avec l'importance \"([^\"]*)\", le statut \"([^\"]*)\", le sujet \"([^\"]*)\" et la date \"([^\"]*)\"$")
 	public void un_second_mail(boolean importance, Statut statut, String sujet,
 			String date) throws DateIncorrecteException {
-		//TODO
+			this.mail2.setImportant(importance);
+			this.mail2.setStatut(statut);
+			this.mail2.setDate(Instant.parse(date));
+			this.mail2.setSujet(sujet);
 	}
 
 	
 
 	@When("^je trie$")
 	public void je_trie() throws Throwable {
-		//TODO
+		this.resultatComparaison =  this.resuAsString.get(this.comparator.compare(mail1, mail2));
 	}
 
-	@Then("^le test d'égalité doit retourner \"([^\"]*)\"$")
+	@Then("^le tri d'égalité doit retourner \"([^\"]*)\"$")
 	public void le_test_d_egalité(String resu) throws Throwable {
-		//TODO
-		//assertThat(...);
+		assertThat(this.resultatComparaison, Is.is(resu));
 	}
 	
 
