@@ -44,32 +44,31 @@ public class MailComparaisonStep {
 	@Given("^un premier mail avec l'importance \"([^\"]*)\", le statut \"([^\"]*)\", le sujet \"([^\"]*)\" et la date \"([^\"]*)\"$")
 	public void un_premier_mail(boolean importance, Statut statut,
 			String sujet, String date) throws DateIncorrecteException {
-		//	this.mail1.setStatut(statut);
-			this.mail1.setImportant(importance);
-			this.mail1.setDate(Instant.parse(date));
-			this.mail1.setSujet(sujet);
-			
+			this.mail1 = new Mail.Builder(sujet)
+								.statut(statut)
+								.date(Instant.parse(date))
+								.important(importance).build();
 	}
 
 	@Given("^un second mail avec l'importance \"([^\"]*)\", le statut \"([^\"]*)\", le sujet \"([^\"]*)\" et la date \"([^\"]*)\"$")
 	public void un_second_mail(boolean importance, Statut statut, String sujet,
 			String date) throws DateIncorrecteException {
-			this.mail2.setImportant(importance);
-			this.mail2.setStatut(statut);
-			this.mail2.setDate(Instant.parse(date));
-			this.mail2.setSujet(sujet);
+			this.mail2 = new Mail.Builder(sujet)
+				.statut(statut)
+				.date(Instant.parse(date))
+				.important(importance).build();
 	}
 
 	
 
 	@When("^je trie$")
 	public void je_trie() throws Throwable {
-		this.resultatComparaison =  this.resuAsString.get(this.comparator.compare(mail1, mail2));
+		this.resultatComparaison =  this.resuAsString.get(this.comparator.compare(this.mail1, this.mail2));
 	}
 
 	@Then("^le tri d'égalité doit retourner \"([^\"]*)\"$")
 	public void le_test_d_egalité(String resu) throws Throwable {
-		assertThat(this.resultatComparaison, Is.is(resu));
+		assertThat(resu, Is.is(this.resultatComparaison));
 	}
 	
 

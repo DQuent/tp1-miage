@@ -25,10 +25,11 @@ Examples:
     
 Scenario: ordre d'une liste de mails
 Given les mails :
-| important  | statut   		 | sujet			  		| date                 | 
+| important  | statut   		 | sujet			  		| date                 |
 | true       | PAS_ENVOYE 		 | aaaaa					| 2017-01-01T14:03:00Z |
 | false      | PAS_ENVOYE 		 | aaaaa					| 2017-01-01T14:03:00Z |
 | false      | LU		 		 | bbbbb					| 2016-12-01T14:03:00Z |
+
 
 When je trie
 Then la liste ordonnée doit être :
@@ -36,5 +37,21 @@ Then la liste ordonnée doit être :
 | true       | PAS_ENVOYE 		 | aaaaa					| 2017-01-01T14:03:00Z |
 | false      | LU		 		 | bbbbb					| 2016-12-01T14:03:00Z | 
 | false      | PAS_ENVOYE 		 | aaaaa					| 2017-01-01T14:03:00Z |
+
+Scenario: ordre d'une liste de mails : Essai 2 Pas besoin de réécrire les TU
+Given les mails :
+| important  | statut   		 | sujet			  		| date                 |
+| true       | LU 		 | ccccc					| 2012-01-01T14:03:00Z |
+| false      | PAS_ENVOYE 		 | eeeee					| 2018-01-01T14:03:00Z |
+| false      | LU		 		 | sssss					| 2015-12-01T14:03:00Z |
+
+
+When je trie
+Then la liste ordonnée doit être :
+| important  | statut   		 | sujet			  		| date                 |
+| true       | LU 		 | ccccc					| 2012-01-01T14:03:00Z |
+| false      | LU		 		 | sssss					| 2015-12-01T14:03:00Z |
+| false      | PAS_ENVOYE 		 | eeeee					| 2018-01-01T14:03:00Z |
+
 
 
